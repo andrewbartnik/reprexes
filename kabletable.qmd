@@ -1,0 +1,59 @@
+---
+title: "kable tables"
+format: html
+editor: visual
+---
+
+```{r}
+library(tidyverse)
+library(kableExtra)
+library(lterdatasampler)
+```
+
+Create a summary table of mean maple seedling height (cm\^2) grouped by watershed and year
+
+```{r}
+
+hbr_sum <- hbr_maples |> 
+  group_by(watershed, year) |> 
+  summarise(mean_height_seedling = round(mean(stem_length), 1), sd = round(sd(stem_length), 1))
+```
+
+Make a nicer table with it!
+
+```{r}
+hbr_sum |> 
+  kable() |> 
+  kable_styling(bootstrap_options = "striped")
+
+hbr_sum |> 
+  kable() |> 
+  kable_classic(bootstrap_options = "striped")
+
+
+hbr_sum |> 
+  kable(col.names = c("Watershed", "Year", "Mean Seedling Height (sq, cm)", "SD Seedling Height (sq. cm)")) |> 
+  kable_styling(bootstrap_options = "striped")
+
+hbr_sum |> 
+  kable(col.names = c("Watershed", "Year", "Mean Seedling Height (sq, cm)", "SD Seedling Height (sq. cm)")) |> 
+  kable_styling(bootstrap_options = "striped") |> 
+  column_spec(1, bold = TRUE, background = "orange") 
+  
+
+hbr_sum |> 
+  kable(col.names = c("Watershed", "Year", "Mean Seedling Height (sq, cm)", "SD Seedling Height (sq. cm)")) |> 
+  kable_styling(bootstrap_options = "striped") |> 
+  column_spec(1, bold = TRUE, background = "orange") |> 
+  add_header_above(c(' ' = 2, "Seedling dimensions" = 2))
+
+
+hbr_sum |> 
+  kable(col.names = c("Watershed", "Year", "Mean Seedling Height (sq, cm)", "SD Seedling Height (sq. cm)")) |> 
+  kable_styling(bootstrap_options = "striped") |> 
+  column_spec(1, bold = TRUE, background = "orange") |> 
+  add_header_above(c(' ' = 2, "Seedling dimensions" = 2)) |> 
+  scroll_box(height = "200px", width = "250px")
+
+
+```
